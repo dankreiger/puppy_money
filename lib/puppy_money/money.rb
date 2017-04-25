@@ -38,6 +38,25 @@ class Money
     end
   end
 
+  # adding money objects together
+  # def +(other)
+  #   if @currency == other.currency
+  #     Money.new(@amount + other.amount, @currency)
+  #   else
+  #     # maybe ask the user?
+  #     puts "Which currency would you like to see the total in?\n1.#{@currency}\n2.#{other.currency}"
+  #     answer = gets.chomp
+  #     case answer.upcase
+  #     # calculate the total in the base currency
+  #     when '1', "#{base_currency}"
+  #       Money.new(amount + other.conversion_amount(base_currency), base_currency)
+  #       # calculate the total in the transfer currency
+  #     when '2', "#{other.base_currency}"
+  #       Money.new(self.conversion_amount(other.base_currency) + other.amount, other.base_currency)
+  #     end
+  #   end
+  # end
+
 
   private
 

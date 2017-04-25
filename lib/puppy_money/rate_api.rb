@@ -1,3 +1,5 @@
+require 'httparty'
+
 module RateApi
   # needs refactoring!!!
 
