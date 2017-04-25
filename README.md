@@ -1,4 +1,4 @@
-# PuppyMoney
+# PuppyMoney [![Build Status](https://travis-ci.org/dankreiger/puppy_money.svg?branch=master)](https://travis-ci.org/dankreiger/puppy_money)
 
 Convert money using real-time exchange rates from [fixer.io](http://fixer.io/)
 
