@@ -15,13 +15,13 @@ class Money
       validate_currency name.to_s.upcase unless info[:non_standard]
     end
 
-    @amount                  = amount
+    @amount                  = amount.round(2)
     @currency                = currency.try(:upcase)
     @manual_currencies       = manual_currencies
   end
 
   def inspect
-    "#{@amount.round(2)} #{@currency}"
+    "#{@amount} #{@currency}"
   end
 
   def convert_to transfer_currency, non_standard=false
@@ -45,7 +45,6 @@ class Money
         Money.new(@amount.public_send(operation, other.amount), @currency)
         # Money.new(@amount + other.amount, @currency)
       else
-        binding.pry
         # maybe ask the user?
         puts "Which currency would you like to see the total in?\n1.#{@currency}\n2.#{other.currency}"
         answer = gets.chomp
