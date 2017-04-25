@@ -66,8 +66,8 @@ describe Money do
 
     describe "money arithmetic" do
       let(:money_euro)  { Money.new 550.55, 'EUR' }
-      let(:money_usd)   { Money.new 101.01, 'USD' }
       let(:money_euro2) { Money.new 101.01, 'EUR' }
+      let(:money_usd)   { Money.new 101.01, 'USD' }
 
       context "addition" do
         # TODO: write a cleaner spec
@@ -152,7 +152,103 @@ describe Money do
           expect(quotient.map(&:currency)).to eq ['EUR', 'USD']
         end
       end
+    end
 
+    describe "money comparison" do
+      let(:money_euro)  { Money.new 550.55, 'EUR' }
+      let(:money_euro2) { Money.new 101.01, 'EUR' }
+      let(:money_usd)   { Money.new 101.01, 'USD' }
+      let(:money_gbp)   { Money.new 101.01, 'GBP' }
+
+      context "==" do
+        it "compares money objects with the same currency" do
+          expect(money_euro == money_euro).to be true
+          expect(money_euro == money_euro2).to be false
+          expect(money_euro == money_usd).to be false
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro == money_usd).to be false
+          expect(money_euro == money_gbp).to be false
+        end
+      end
+
+      context "!=" do
+        it "compares money objects with the same currency" do
+          expect(money_euro != money_euro).to be false
+          expect(money_euro != money_euro2).to be true
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro != money_usd).to be true
+          expect(money_euro != money_gbp).to be true
+        end
+      end
+
+      context ">" do
+        it "compares money objects with the same currency" do
+          expect(money_euro > money_euro2).to be true
+          expect(money_euro > money_euro).to be false
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro > money_gbp).to be true
+          expect(money_euro > money_usd).to be true
+          expect(money_usd > money_euro).to be false
+        end
+      end
+
+      context ">=" do
+        it "compares money objects with the same currency" do
+          expect(money_euro >= money_euro2).to be true
+          expect(money_euro >= money_euro).to be true
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro >= money_gbp).to be true
+          expect(money_euro >= money_usd).to be true
+          expect(money_usd >= money_euro).to be false
+        end
+      end
+
+      context "<" do
+        it "compares money objects with the same currency" do
+          expect(money_euro < money_euro2).to be false
+          expect(money_euro < money_euro).to be false
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro < money_gbp).to be false
+          expect(money_euro < money_usd).to be false
+          expect(money_usd < money_euro).to be true
+        end
+      end
+
+      context "<=" do
+        it "compares money objects with the same currency" do
+          expect(money_euro <= money_euro2).to be false
+          expect(money_euro <= money_euro).to be true
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_euro <= money_gbp).to be false
+          expect(money_euro <= money_usd).to be false
+          expect(money_usd <= money_euro).to be true
+        end
+      end
+
+      context "<=>" do
+        it "compares money objects with the same currency" do
+          expect(money_euro <=> money_euro2).to eq(1)
+          expect(money_euro <=> money_euro).to eq(0)
+        end
+
+        it "compares money objects with different currencies" do
+          expect(money_gbp <=> money_euro).to eq(-1)
+          expect(money_euro <=> money_usd).to eq(1)
+          expect(money_usd <=> money_euro).to eq(-1)
+        end
+      end
     end
   end
 end

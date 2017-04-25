@@ -38,17 +38,24 @@ class Money
     end
   end
 
-  #  money object arithmetic
-  [:+, :-, :*, :/].each do |operation|
+  #  money object arithmetic and comparison
+  [:+, :-, :*, :/, :==, :>, :>=, :<, :<=, :<=>].each do |operation|
     define_method(operation) do |other|
-      if @currency == other.currency
-        Money.new(@amount.public_send(operation, other.amount), @currency)
+      if [:+, :-, :*, :/].include? operation
+        if @currency == other.currency
+          Money.new(@amount.public_send(operation, other.amount), @currency)
+        else
+          [
+            Money.new(@amount.public_send(operation, other.conversion_amount(@currency)), @currency),
+            Money.new(self.conversion_amount(other.currency).public_send(operation, other.amount), other.currency)
+          ]
+        end
       else
-        # return an array with both money objects if the currencies are different
-        [
-          Money.new(@amount.public_send(operation, other.conversion_amount(@currency)), @currency),
-          Money.new(self.conversion_amount(other.currency).public_send(operation, other.amount), other.currency)
-        ]
+        if @currency == other.currency
+          @amount.public_send(operation, other.amount)
+        else
+          @amount.public_send(operation, other.conversion_amount(@currency))
+        end
       end
     end
   end
