@@ -11,7 +11,7 @@ describe Money do
     let(:hashes)         { [Hash.new, {}, {foo: 'bar'}] }
     let(:numbers)        { [50, 50.01, 50.011] }
     let(:currencies)     { CURRENCIES.keys.map(&:to_s) }
-    let(:api_currencies) { RateApi.fetch_symbols }
+    let(:api_currencies) { RateApi.fetch_symbols('EUR') }
 
     context "validate_amount" do
       it "must be numerical" do
@@ -36,11 +36,21 @@ describe Money do
         symbols.each  { |sym|  expect{ Money.new 50, sym  }.to raise_error  ArgumentError }
         arrays.each   { |arr|  expect{ Money.new 50, arr  }.to raise_error  ArgumentError }
         hashes.each   { |hash| expect{ Money.new 50, hash }.to raise_error  ArgumentError }
+        # invalid manually inputted currency
+        currencies.each { |currency| expect{ Money.new 50, currency, {GBPP: {rate: '0.4562'}} }.to raise_error ArgumentError }
+        currencies.each { |currency| expect{ Money.new 50, currency, {EURO: {rate: '0.4562'}, USD: {rate:  '1.1'}} }.to raise_error ArgumentError }
+        currencies.each { |currency| expect{ Money.new 50, currency, {EURO: {rate: '0.4562'}, USD: {rate:  '1.1'},  Bitcoin: { rate: '0.0047', non_standard: true } } }.to raise_error ArgumentError }
 
         # valid currency for automatic currency conversion
         api_currencies.each { |currency| expect{ Money.new 50, currency }.to_not raise_error }
-        # valid currency for custom conversion
-        currencies.each { |currency| expect{ Money.new 50, currency, {fake_currency: '0.4562'} }.to_not raise_error }
+        # valid manually inputted currency
+        currencies.each { |currency| expect{ Money.new 50, currency, {GBP: {rate: '0.4562'}} }.to_not raise_error }
+
+        # do not raise an error for non-standard currencies
+        currencies.each do |currency|
+          expect{ Money.new 50, currency, { Bitcoin: { rate: '0.0047', non_standard: true } } }.to_not raise_error
+          expect{ Money.new 50, currency, { Bitcoin: { rate: '0.0047', non_standard: true }, USD: {rate: '1.1'} } }.to_not raise_error
+        end
       end
     end
 

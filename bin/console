@@ -11,4 +11,5 @@ require "puppy_money"
 # Pry.start
 
 require "irb"
+
 IRB.start(__FILE__)

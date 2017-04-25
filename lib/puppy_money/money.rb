@@ -21,7 +21,7 @@ class Money
   end
 
   def inspect
-    "#{('%.2f' % @amount)} #{@currency}"
+    "#{@amount.round(2)} #{@currency}"
   end
 
   def convert_to transfer_currency, non_standard=false
@@ -38,25 +38,34 @@ class Money
     end
   end
 
-  # adding money objects together
-  # def +(other)
-  #   if @currency == other.currency
-  #     Money.new(@amount + other.amount, @currency)
-  #   else
-  #     # maybe ask the user?
-  #     puts "Which currency would you like to see the total in?\n1.#{@currency}\n2.#{other.currency}"
-  #     answer = gets.chomp
-  #     case answer.upcase
-  #     # calculate the total in the base currency
-  #     when '1', "#{base_currency}"
-  #       Money.new(amount + other.conversion_amount(base_currency), base_currency)
-  #       # calculate the total in the transfer currency
-  #     when '2', "#{other.base_currency}"
-  #       Money.new(self.conversion_amount(other.base_currency) + other.amount, other.base_currency)
-  #     end
-  #   end
-  # end
+  #  money object arithemtic
+  [:+, :-, :*, :/].each do |operation|
+    define_method(operation) do |other|
+      if @currency == other.currency
+        Money.new(@amount.public_send(operation, other.amount), @currency)
+        # Money.new(@amount + other.amount, @currency)
+      else
+        binding.pry
+        # maybe ask the user?
+        puts "Which currency would you like to see the total in?\n1.#{@currency}\n2.#{other.currency}"
+        answer = gets.chomp
+        case answer.upcase
+        # calculate the total in the base currency
+      when '1', "#{@currency}"
+          Money.new(amount + other.conversion_amount(@currency), @currency)
+          # calculate the total in the transfer currency
+        when '2', "#{other.base_currency}"
+          Money.new(self.conversion_amount(other.currency) + other.amount, other.currency)
+        end
+      end
+    end
+  end
 
+  protected
+
+  def conversion_amount transfer_currency
+    convert_to(transfer_currency).amount
+  end
 
   private
 
