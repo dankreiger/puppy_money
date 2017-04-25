@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "puppy_money"
+require "httparty"
 require "pry"
 
 RSpec.configure do |config|

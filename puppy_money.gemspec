@@ -28,5 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", "~> 0.10"
 
   # runtime
+  spec.add_runtime_dependency "activesupport", "~> 5.0"
   spec.add_runtime_dependency "httparty", "~> 0.14"
 end
