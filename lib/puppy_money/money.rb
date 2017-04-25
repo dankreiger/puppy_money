@@ -38,29 +38,20 @@ class Money
     end
   end
 
-  #  money object arithemtic
+  #  money object arithmetic
   [:+, :-, :*, :/].each do |operation|
     define_method(operation) do |other|
       if @currency == other.currency
         Money.new(@amount.public_send(operation, other.amount), @currency)
-        # Money.new(@amount + other.amount, @currency)
       else
-        # maybe ask the user?
-        puts "Which currency would you like to see the total in?\n1.#{@currency}\n2.#{other.currency}"
-        answer = gets.chomp
-        case answer.upcase
-        # calculate the total in the base currency
-      when '1', "#{@currency}"
-          Money.new(amount + other.conversion_amount(@currency), @currency)
-          # calculate the total in the transfer currency
-        when '2', "#{other.base_currency}"
-          Money.new(self.conversion_amount(other.currency) + other.amount, other.currency)
-        end
+        # return an array with both money objects if the currencies are different
+        [
+          Money.new(@amount.public_send(operation, other.conversion_amount(@currency)), @currency),
+          Money.new(self.conversion_amount(other.currency).public_send(operation, other.amount), other.currency)
+        ]
       end
     end
   end
-
-  protected
 
   def conversion_amount transfer_currency
     convert_to(transfer_currency).amount
