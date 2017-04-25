@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Money do
 
-  describe "validate_input" do
+  describe "validations" do
     let(:amount_error)   { 'Amount must be a number' }
     let(:strings)        { ['puppy', '50', '50.000' 'Duzentilliarden'] }
     let(:booleans)       { [true, false, nil] }
@@ -13,9 +13,8 @@ describe Money do
     let(:currencies)     { CURRENCIES.keys.map(&:to_s) }
     let(:api_currencies) { RateApi.fetch_symbols }
 
-    context "amount" do
+    context "validate_amount" do
       it "must be numerical" do
-        binding.pry
         # invalid amount
         strings.each    { |str|  expect{ Money.new str,  'EUR' }.to raise_error ArgumentError, amount_error }
         booleans.each   { |bool| expect{ Money.new bool, 'EUR' }.to raise_error ArgumentError, amount_error }
@@ -29,19 +28,29 @@ describe Money do
       end
     end
 
-    context "base_currency" do
+    context "validate_currency" do
       it "must be a valid currency symbol" do
-        # invalid base_currency
+        # invalid currency
         strings.each  { |str|  expect{ Money.new 50, str  }.to raise_error  ArgumentError }
         booleans.each { |bool| expect{ Money.new 50, bool }.to raise_error  ArgumentError }
         symbols.each  { |sym|  expect{ Money.new 50, sym  }.to raise_error  ArgumentError }
         arrays.each   { |arr|  expect{ Money.new 50, arr  }.to raise_error  ArgumentError }
         hashes.each   { |hash| expect{ Money.new 50, hash }.to raise_error  ArgumentError }
 
-        # valid base_currency for automatic currency conversion
+        # valid currency for automatic currency conversion
         api_currencies.each { |currency| expect{ Money.new 50, currency }.to_not raise_error }
-        # valid base_currency for custom conversion
+        # valid currency for custom conversion
         currencies.each { |currency| expect{ Money.new 50, currency, {fake_currency: '0.4562'} }.to_not raise_error }
+      end
+    end
+
+    context "convert_to" do
+      let(:money_euro) { Money.new 50, 'EUR' }
+      let(:usd_rate)   { RateApi.fetch_transfer_rate(money_euro.currency, 'USD')  }
+
+      # TODO: write a cleaner spec
+      it "converts to a specified currency using real-time exchange rates" do
+        expect((money_euro.convert_to('USD')).inspect).to eq Money.new(money_euro.amount * usd_rate, 'USD').inspect
       end
     end
   end
