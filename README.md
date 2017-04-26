@@ -59,8 +59,6 @@ twenty_dollars > Money.new(5, 'USD')   # => true
 twenty_dollars < fifty_eur             # => true
 ```
 
-:dog:
-
 ## TODO
 - Implement functionality for manually inputted currencies and non-standard currencies
 - Refactor code into smaller services
