@@ -42,7 +42,9 @@ class Money
   [:+, :-, :*, :/, :==, :>, :>=, :<, :<=, :<=>].each do |operation|
     define_method(operation) do |other|
       if [:+, :-, :*, :/].include? operation
-        if @currency == other.currency
+        if other.is_a? Numeric
+          Money.new(@amount.public_send(operation, other), @currency)
+        elsif @currency == other.currency
           Money.new(@amount.public_send(operation, other.amount), @currency)
         else
           [

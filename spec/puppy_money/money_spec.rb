@@ -78,7 +78,7 @@ describe Money do
           expect(sum.currency).to eq 'EUR'
         end
 
-        it "returns the correct sum of amounts when adding money objects with the different currencies" do
+        it "returns the correct sum of amounts when adding money objects with different currencies" do
           sum = money_euro + money_usd
           expect(sum.inspect).to eq [
             Money.new((money_euro.amount + money_usd.conversion_amount('EUR')), 'EUR'),
@@ -88,11 +88,18 @@ describe Money do
           expect(sum.map(&:amount)).to eq [money_euro.amount + money_usd.conversion_amount('EUR'), money_usd.amount + money_euro.conversion_amount('USD')]
           expect(sum.map(&:currency)).to eq ['EUR', 'USD']
         end
+
+        it "returns the correct sum when adding money objects with a numeric" do
+          sum = money_euro + 10
+          expect(sum.inspect).to eq Money.new(money_euro.amount + 10, 'EUR').inspect
+          expect(sum.amount).to eq((550.55 + 10))
+          expect(sum.currency).to eq 'EUR'
+        end
       end
 
       context "subtraction" do
         # TODO: write a cleaner spec
-        it "returns the correct difference of amounts when subtracting money objects with the same currency" do
+        it "returns the correct difference between amounts when subtracting money objects with the same currency" do
           difference = money_euro - money_euro2
 
           expect(difference.inspect).to eq Money.new(money_euro.amount - money_euro2.amount, 'EUR').inspect
@@ -100,7 +107,7 @@ describe Money do
           expect(difference.currency).to eq 'EUR'
         end
 
-        it "returns the correct difference of amounts when subtracting money objects with the different currencies" do
+        it "returns the correct difference between amounts when subtracting money objects with different currencies" do
           difference = money_euro - money_usd
           expect(difference.inspect).to eq [
             Money.new((money_euro.amount - money_usd.conversion_amount('EUR')), 'EUR'),
@@ -108,6 +115,13 @@ describe Money do
           ].inspect
           expect(difference.map(&:amount)).to eq [(money_euro.amount - money_usd.conversion_amount('EUR')).round(2), (money_euro.conversion_amount('USD') - money_usd.amount).round(2)]
           expect(difference.map(&:currency)).to eq ['EUR', 'USD']
+        end
+
+        it "returns the correct difference when subtracting money objects from a numeric" do
+          difference = money_euro - 10
+          expect(difference.inspect).to eq Money.new(money_euro.amount - 10, 'EUR').inspect
+          expect(difference.amount).to eq((550.55 - 10))
+          expect(difference.currency).to eq 'EUR'
         end
       end
 
@@ -121,7 +135,7 @@ describe Money do
           expect(product.currency).to eq 'EUR'
         end
 
-        it "returns the correct product of amounts when multiplying money objects with the different currencies" do
+        it "returns the correct product of amounts when multiplying money objects with different currencies" do
           product = money_euro * money_usd
           expect(product.inspect).to eq [
             Money.new((money_euro.amount * money_usd.conversion_amount('EUR')), 'EUR'),
@@ -129,6 +143,13 @@ describe Money do
           ].inspect
           expect(product.map(&:amount)).to eq [(money_euro.amount * money_usd.conversion_amount('EUR')).round(2), (money_euro.conversion_amount('USD') * money_usd.amount).round(2)]
           expect(product.map(&:currency)).to eq ['EUR', 'USD']
+        end
+
+        it "returns the correct product when multiplying money objects with a numeric" do
+          product = money_euro * 10
+          expect(product.inspect).to eq Money.new(money_euro.amount * 10, 'EUR').inspect
+          expect(product.amount).to eq((550.55 * 10))
+          expect(product.currency).to eq 'EUR'
         end
       end
 
@@ -142,7 +163,7 @@ describe Money do
           expect(quotient.currency).to eq 'EUR'
         end
 
-        it "returns the correct quotient of amounts when dividing money objects with the different currencies" do
+        it "returns the correct quotient of amounts when dividing money objects with different currencies" do
           quotient = money_euro / money_usd
           expect(quotient.inspect).to eq [
             Money.new((money_euro.amount / money_usd.conversion_amount('EUR')), 'EUR'),
@@ -150,6 +171,13 @@ describe Money do
           ].inspect
           expect(quotient.map(&:amount)).to eq [(money_euro.amount / money_usd.conversion_amount('EUR')).round(2), (money_euro.conversion_amount('USD') / money_usd.amount).round(2)]
           expect(quotient.map(&:currency)).to eq ['EUR', 'USD']
+        end
+
+        it "returns the correct quotient when divding money objects with a numeric" do
+          quotient = money_euro / 10
+          expect(quotient.inspect).to eq Money.new(money_euro.amount / 10, 'EUR').inspect
+          expect(quotient.amount).to eq((550.55 / 10).round(2))
+          expect(quotient.currency).to eq 'EUR'
         end
       end
     end
