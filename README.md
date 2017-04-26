@@ -21,7 +21,7 @@ Or install it yourself as:
 ## Usage
 Woof.
 
-Conversion money using real-time rates
+Convert money using real-time rates
 ```ruby
 # Instantiate money objects:
 
