@@ -19,7 +19,7 @@ Or install it yourself as:
     $ gem install puppy_money
 
 ## Usage
-Woof.
+Woof :dog:
 
 Convert money using real-time rates
 ```ruby
