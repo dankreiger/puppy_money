@@ -1,4 +1,4 @@
-# :dog: PuppyMoney [![Build Status](https://travis-ci.org/dankreiger/puppy_money.svg?branch=master)](https://travis-ci.org/dankreiger/puppy_money)
+# PuppyMoney [![Build Status](https://travis-ci.org/dankreiger/puppy_money.svg?branch=master)](https://travis-ci.org/dankreiger/puppy_money)
 
 Convert money using real-time exchange rates from [fixer.io](http://fixer.io/)
 
@@ -58,6 +58,8 @@ fifty_eur_in_usd == fifty_eur          # => true
 twenty_dollars > Money.new(5, 'USD')   # => true
 twenty_dollars < fifty_eur             # => true
 ```
+
+:dog:
 
 ## TODO
 - Implement functionality for manually inputted currencies and non-standard currencies
