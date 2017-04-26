@@ -1,4 +1,4 @@
-# PuppyMoney [![Build Status](https://travis-ci.org/dankreiger/puppy_money.svg?branch=master)](https://travis-ci.org/dankreiger/puppy_money)
+# :dog: PuppyMoney [![Build Status](https://travis-ci.org/dankreiger/puppy_money.svg?branch=master)](https://travis-ci.org/dankreiger/puppy_money)
 
 Convert money using real-time exchange rates from [fixer.io](http://fixer.io/)
 
@@ -19,7 +19,6 @@ Or install it yourself as:
     $ gem install puppy_money
 
 ## Usage
-Woof :dog:
 
 Convert money using real-time rates
 ```ruby
