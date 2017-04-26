@@ -26,7 +26,7 @@ Conversion money using real-time rates
 # Instantiate money objects:
 
 fifty_eur = Money.new(50, 'EUR')
-
+twenty_dollars = Money.new(20, 'USD')
 # Get amount and currency:
 
 fifty_eur.amount   # => 50
