@@ -2,6 +2,8 @@
 
 Convert money using real-time exchange rates from [fixer.io](http://fixer.io/)
 
+![puppy money demo](https://media.giphy.com/media/VTHwdyQzITyIE/giphy.gif)
+
 ## Installation
 
 Add this line to your application's Gemfile:
