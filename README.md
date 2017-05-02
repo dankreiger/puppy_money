@@ -2,7 +2,7 @@
 
 Convert money using real-time exchange rates from [fixer.io](http://fixer.io/)
 
-![puppy money demo](https://media.giphy.com/media/VTHwdyQzITyIE/giphy.gif)
+![puppy money demo](http://i.imgur.com/YvnVNAp.gif)
 
 ## Installation
 
