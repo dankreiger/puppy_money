@@ -85,7 +85,7 @@ describe Money do
             Money.new((money_usd.amount + money_euro.conversion_amount('USD')), 'USD')
           ].inspect
 
-          expect(sum.map(&:amount)).to eq [(money_euro.amount + money_usd.conversion_amount('EUR')).round(2), money_usd.amount + money_euro.conversion_amount('USD').round(2)]
+          expect(sum.map(&:amount)).to eq [(money_euro.amount + money_usd.conversion_amount('EUR')).round(2), (money_usd.amount + money_euro.conversion_amount('USD')).round(2)]
           expect(sum.map(&:currency)).to eq ['EUR', 'USD']
         end
 
